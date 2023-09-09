@@ -5,7 +5,7 @@
 //app.MapGet("/",async context =>
 //{
 //    var company = new Company("Privat bank", 1992);
-//    await context.Response.WriteAsync($"Company Name: {company.name}, Year of foundation: {company.yearOfCr}");
+//    await context.Response.WriteAsync($"Company name: {company.name}, Year of foundation: {company.yearOfCr}");
 //});
 
 //app.Run();
