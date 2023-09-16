@@ -1,0 +1,17 @@
+<companies>
+	<company>
+		<name>Microsoft</name>
+		<yearOfCr>1975</yearOfCr>
+		<employees>230000</employees>
+	</company>
+	<company>
+		<name>Apple</name>
+		<yearOfCr>1976</yearOfCr>
+		<employees>164000</employees>
+	</company>
+	<company>
+		<name>Google</name>
+		<yearOfCr>1998</yearOfCr>
+		<employees>139995</employees>
+	</company>
+</companies>
