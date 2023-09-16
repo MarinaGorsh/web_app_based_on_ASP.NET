@@ -1,18 +1,36 @@
-using App;
-var builder = WebApplication.CreateBuilder(args);
+var builder = WebApplication.CreateBuilder();
 var app = builder.Build();
 
-app.MapGet("/ex1", async (context) =>
-{
-    var company = new Company("Privat bank", 1992);
-    await context.Response.WriteAsync($"Company name: {company.Name}, Year of foundation: {company.YearOfCr}");
-});
+builder.Configuration
+    .AddJsonFile("comp.json")
+    .AddXmlFile("company.xml")
+    .AddIniFile("compan.ini")
+    .AddJsonFile("me.json");
 
-app.MapGet("/ex2", async (context) =>
+app.Map("/", (IConfiguration appConfig) =>
 {
-    var random = new Random();
-    var randomNumber = random.Next(0, 101);
-    await context.Response.WriteAsync($"Random Number: {randomNumber}");
-});
+    int max = 0;
+    string compName = "";
+    var companies = appConfig.GetSection("companies").GetChildren();
 
+    foreach (var company in companies) {
+        int emploees = company.GetValue<int>("employees");
+        if (emploees > max) { 
+            max = emploees;
+            compName = company.GetValue<string>("name");
+        }
+    }
+
+    return compName;
+});
+app.Map("/ex2", (IConfiguration appConfig) =>
+{
+    var me = appConfig.GetSection("me").GetChildren();
+    var meList = new List<string>();
+    foreach (var inf in me) {
+        var infa = inf.Value;
+        meList.Add(infa);
+    }
+    return meList;
+});
 app.Run();
