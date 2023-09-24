@@ -1,36 +1,22 @@
+using WebApplication3;
+
 var builder = WebApplication.CreateBuilder();
+builder.Services.AddTransient<CalcService>();
+builder.Services.AddTransient<ITimeService, ShortTimeService>();
 var app = builder.Build();
 
-builder.Configuration
-    .AddJsonFile("comp.json")
-    .AddXmlFile("company.xml")
-    .AddIniFile("compan.ini")
-    .AddJsonFile("me.json");
-
-app.Map("/", (IConfiguration appConfig) =>
+app.Map("/ex1", async context =>
 {
-    int max = 0;
-    string compName = "";
-    var companies = appConfig.GetSection("companies").GetChildren();
-
-    foreach (var company in companies) {
-        int emploees = company.GetValue<int>("employees");
-        if (emploees > max) { 
-            max = emploees;
-            compName = company.GetValue<string>("name");
-        }
-    }
-
-    return compName;
+    var calc = app.Services.GetService<CalcService>();
+    await context.Response.WriteAsync($"Sum: {calc.Sum(5, 8)}\n");
+    await context.Response.WriteAsync($"Minus: {calc.Minus(8, 5)}\n");
+    await context.Response.WriteAsync($"Multiple: {calc.Multiple(5, 8)} \n");
+    await context.Response.WriteAsync($"Divide: {calc.Divide(8, 2)} \n");
 });
-app.Map("/ex2", (IConfiguration appConfig) =>
+app.Map("/ex2", async context =>
 {
-    var me = appConfig.GetSection("me").GetChildren();
-    var meList = new List<string>();
-    foreach (var inf in me) {
-        var infa = inf.Value;
-        meList.Add(infa);
-    }
-    return meList;
+    var time = app.Services.GetService<ITimeService>();
+    await context.Response.WriteAsync($"Time: {time?.GetTime()}");
 });
 app.Run();
+
