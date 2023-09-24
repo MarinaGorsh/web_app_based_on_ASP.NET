@@ -1,0 +1,4 @@
+interface ITimeService
+{
+    string GetTime();
+}
