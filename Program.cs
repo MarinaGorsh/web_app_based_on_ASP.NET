@@ -1,22 +1,116 @@
-using WebApplication3;
-
 var builder = WebApplication.CreateBuilder();
-builder.Services.AddTransient<CalcService>();
-builder.Services.AddTransient<ITimeService, ShortTimeService>();
 var app = builder.Build();
 
-app.Map("/ex1", async context =>
+builder.Configuration
+    .AddJsonFile("books.json")
+    .AddJsonFile("users.json");
+
+app.Map("/library", () => "Hello, user");
+app.Map("/library/books", (IConfiguration appConfig) =>
 {
-    var calc = app.Services.GetService<CalcService>();
-    await context.Response.WriteAsync($"Sum: {calc.Sum(5, 8)}\n");
-    await context.Response.WriteAsync($"Minus: {calc.Minus(8, 5)}\n");
-    await context.Response.WriteAsync($"Multiple: {calc.Multiple(5, 8)} \n");
-    await context.Response.WriteAsync($"Divide: {calc.Divide(8, 2)} \n");
+    var books = appConfig.GetSection("books").GetChildren();
+    List<string> listBooks = new List<string>();
+
+    foreach (var book in books)
+    {
+        string bookName = book.GetValue<string>("name");
+        listBooks.Add(bookName);
+    }
+    string result = string.Join("\n", listBooks);
+    return result;
 });
-app.Map("/ex2", async context =>
-{
-    var time = app.Services.GetService<ITimeService>();
-    await context.Response.WriteAsync($"Time: {time?.GetTime()}");
+app.Map("/library/profile/id/{number:int:range(1, 5)}", (IConfiguration appConfig, int number) => {
+    var users = appConfig.GetSection("users").GetChildren();
+    List<string> userInfo = new List<string>();
+
+    foreach (var user in users)
+    {
+        var id = user.GetValue<int>("id");
+        if (number == id)
+        {
+            string name = user.GetValue<string>("name");
+            string surname = user.GetValue<string>("surname");
+            int year = user.GetValue<int>("year");
+            string books = user.GetValue<string>("books");
+
+            userInfo.Add($"Name: {name}");
+            userInfo.Add($"Surname: {surname}");
+            userInfo.Add($"Year of birth: {year}");
+
+            if (!string.IsNullOrEmpty(books))
+            {
+                string[] bookIds = books.Split(',').Select(s => s.Trim()).ToArray();
+                userInfo.Add("Books:");
+                foreach (string bookId in bookIds)
+                {
+                    int bookNumber;
+                    if (int.TryParse(bookId, out bookNumber))
+                    {
+                        var bookInfo = appConfig.GetSection("books")
+                            .GetChildren()
+                            .FirstOrDefault(b => b.GetValue<int>("number") == bookNumber);
+
+                        if (bookInfo != null)
+                        {
+                            string bookName = bookInfo.GetValue<string>("name");
+                            userInfo.Add($"- {bookName}");
+                        }
+                    }
+                }
+            }
+
+            break;
+        }
+    }
+    string result = string.Join("\n", userInfo);
+    return result;
+});
+
+app.Map("/library/profile/id", (IConfiguration appConfig) => {
+    var users = appConfig.GetSection("users").GetChildren();
+    List<string> userInfo = new List<string>();
+
+    foreach (var user in users)
+    {
+        var id = user.GetValue<int>("id");
+        if (id == 1)
+        {
+            string name = user.GetValue<string>("name");
+            string surname = user.GetValue<string>("surname");
+            int year = user.GetValue<int>("year");
+            string books = user.GetValue<string>("books");
+
+            userInfo.Add($"Name: {name}");
+            userInfo.Add($"Surname: {surname}");
+            userInfo.Add($"Year of birth: {year}");
+
+            if (!string.IsNullOrEmpty(books))
+            {
+                string[] bookIds = books.Split(',').Select(s => s.Trim()).ToArray();
+                userInfo.Add("Books:");
+                foreach (string bookId in bookIds)
+                {
+                    int bookNumber;
+                    if (int.TryParse(bookId, out bookNumber))
+                    {
+                        var bookInfo = appConfig.GetSection("books")
+                            .GetChildren()
+                            .FirstOrDefault(b => b.GetValue<int>("number") == bookNumber);
+
+                        if (bookInfo != null)
+                        {
+                            string bookName = bookInfo.GetValue<string>("name");
+                            userInfo.Add($"- {bookName}");
+                        }
+                    }
+                }
+            }
+
+            break;
+        }
+    }
+    string result = string.Join("\n", userInfo);
+    return result;
 });
 app.Run();
 
