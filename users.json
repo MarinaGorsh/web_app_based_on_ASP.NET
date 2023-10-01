@@ -1,0 +1,25 @@
+{
+  "users": [
+    {
+      "name": "Maryna",
+      "surname": "Horshevska",
+      "year": 2004,
+      "books": "3",
+      "id": 1
+    },
+    {
+      "name": "Neolina",
+      "surname": "Kolonifa",
+      "year": 2006,
+      "books": null,
+      "id": 2
+    },
+    {
+      "name": "Elina",
+      "surname": "Palko",
+      "year": 2004,
+      "books": "1, 2",
+      "id": 3
+    }
+  ]
+}
