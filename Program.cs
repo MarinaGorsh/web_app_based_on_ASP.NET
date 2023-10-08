@@ -1,22 +1,34 @@
-using WebApplication3;
-
 var builder = WebApplication.CreateBuilder();
-builder.Services.AddTransient<CalcService>();
-builder.Services.AddTransient<ITimeService, ShortTimeService>();
+//builder.Logging.AddFile(Path.Combine(Directory.GetCurrentDirectory(), "logger.txt"));
 var app = builder.Build();
 
-app.Map("/ex1", async context =>
+app.UseMiddleware<MiddlewareFile>();
+
+app.Map("/submit", async (context) =>
 {
-    var calc = app.Services.GetService<CalcService>();
-    await context.Response.WriteAsync($"Sum: {calc.Sum(5, 8)}\n");
-    await context.Response.WriteAsync($"Minus: {calc.Minus(8, 5)}\n");
-    await context.Response.WriteAsync($"Multiple: {calc.Multiple(5, 8)} \n");
-    await context.Response.WriteAsync($"Divide: {calc.Divide(8, 2)} \n");
+    string name = context.Request.Form["name"];
+    string datetime = context.Request.Form["datetime"];
+
+    if (!string.IsNullOrEmpty(name) && !string.IsNullOrEmpty(datetime))
+    {
+        if (DateTime.TryParse(datetime, out DateTime dataTime))
+        {
+            context.Response.Cookies.Append("name", name, new CookieOptions
+            {
+                Expires = dataTime,
+            });
+
+            await context.Response.WriteAsync($"Name - {name}, Time - {dataTime}");
+        }
+    }
 });
-app.Map("/ex2", async context =>
+
+
+app.Run(async (context) =>
 {
-    var time = app.Services.GetService<ITimeService>();
-    await context.Response.WriteAsync($"Time: {time?.GetTime()}");
+    int a = 5;
+    int b = 0;
+    int c = a / b;
+    await context.Response.WriteAsync($"c = {c}");
 });
 app.Run();
-
