@@ -1,5 +1,4 @@
 var builder = WebApplication.CreateBuilder();
-//builder.Logging.AddFile(Path.Combine(Directory.GetCurrentDirectory(), "logger.txt"));
 var app = builder.Build();
 
 app.UseMiddleware<MiddlewareFile>();
@@ -24,7 +23,7 @@ app.Map("/submit", async (context) =>
 });
 
 
-app.Run(async (context) =>
+app.Map("/", async (context) =>
 {
     int a = 5;
     int b = 0;
