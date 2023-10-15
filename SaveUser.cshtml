@@ -1,0 +1,34 @@
+﻿@model WebApplication4.Models.ProductModel
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Order Summary</title>
+</head>
+<body>
+    <h1>Order Summary</h1>
+    @if (Model != null)
+    {
+        <p>User Name: @Model.UserName</p>
+        <p>User Age: @Model.UserAge</p>
+        <p>User Address: @Model.UserAdress</p>
+        <p>User Phone Number: @Model.UserPhoneNumber</p>
+
+        if (Model.SelectedPizzas != null && Model.SelectedPizzas.Any())
+        {
+        <h2>Selected Pizzas</h2>
+        <ul>
+            @foreach (var pizza in Model.SelectedPizzas)
+                {
+            <li>@pizza</li>
+                }
+        </ul>
+        }
+    }
+</body>
+</html>
