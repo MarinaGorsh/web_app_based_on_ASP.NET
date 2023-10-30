@@ -1,0 +1,25 @@
+﻿@{
+Layout = null;
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Form</title>
+</head>
+<body>
+    <form action="/File/DownloadFileTxt" method="post">
+        <label for="UserName">User Name</label>
+        <input type="text" id="UserName" name="UserName" required /><br><br>
+
+        <label for="UserSurname">User Surname</label>
+        <input type="text" id="UserSurname" name="UserSurname" required /><br><br>
+
+        <label for="NameOfFile">Name of file</label>
+        <input type="text" id="NameOfFile" name="NameOfFile" required /><br><br>
+
+        <input type="submit" value="Save" />
+    </form>
+</body>
+</html>
