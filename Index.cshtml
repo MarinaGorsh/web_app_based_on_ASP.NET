@@ -1,0 +1,36 @@
+@{
+Layout = null;
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Form</title>
+</head>
+<body>
+    @foreach (var product in Model){
+    <ul>
+        <li>@product.ID.@product.Name - @product.Price$(@product.CreatedDate)</li>
+    </ul>
+    }
+    
+    <table
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Price</th>
+            <th>CreatedDate</th>
+        </tr>
+    @foreach (var product in Model){
+        <tr>
+            <th>@product.ID</th>
+            <th>@product.Name</th>
+            <th>@product.Price</th>
+            <th>@product.CreatedDate</th>
+        </tr>
+     }
+    </table>
+    
+</body>
+</html>
