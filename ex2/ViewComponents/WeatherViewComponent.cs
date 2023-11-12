@@ -39,7 +39,7 @@ public class WeatherViewComponent : ViewComponent
             }
             else
             {
-                throw new Exception($"Помилка при отриманні даних погоди: {response.ReasonPhrase}");
+                throw new Exception($"ГЏГ®Г¬ГЁГ«ГЄГ  ГЇГ°ГЁ Г®ГІГ°ГЁГ¬Г Г­Г­Ві Г¤Г Г­ГЁГµ ГЇГ®ГЈГ®Г¤ГЁ: {response.ReasonPhrase}");
             }
         }
     }
