@@ -7,7 +7,7 @@ namespace WebApplication4.Filters
 {
     public class UniqueUsersFilter : ActionFilterAttribute
     {
-        private static Dictionary<string, bool> uniqueUsers = new Dictionary<string, bool>();
+        public Dictionary<string, bool> uniqueUsers = new Dictionary<string, bool>();
 
         public override void OnActionExecuting(ActionExecutingContext context)
         {
@@ -20,13 +20,12 @@ namespace WebApplication4.Filters
             }
         }
 
-
-        private void LogUserCount(int count)
+        public void LogUserCount(int count)
         {
             string filePath = @"C:\Users\Marina Gorshevskaya\source\repos\WebApplication4\WebApplication4\UniqUsers.txt";
 
             DateTime timestamp = DateTime.Now;
-            string logMessage = $"{timestamp}: Кількість унікальних користувачів: {count}";
+            string logMessage = $"{timestamp}: РљС–Р»СЊРєС–СЃС‚СЊ СѓРЅС–РєР°Р»СЊРЅРёС… РєРѕСЂРёСЃС‚СѓРІР°С‡С–РІ: {count}";
             using (StreamWriter writer = new StreamWriter(filePath, true))
             {
                 writer.WriteLine(logMessage);
