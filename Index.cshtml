@@ -1,0 +1,33 @@
+﻿@model IEnumerable<WebApplication5.Models.User>
+<h2>Список користувачів</h2>
+<table class="table">
+    <tr>
+        <th>Ім'я</th>
+        <th>Прізвище</th>
+        <th>Вік</th>
+    </tr>
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>@item.FirstName</td>
+            <td>@item.LastName</td>
+            <td>@item.Age</td>
+        </tr>
+    }
+</table>
+@*
+@model IEnumerable<WebApplication5.Models.Company>
+<table class="table">
+    <tr>
+        <th>Назва</th>
+        <th>Рік</th>
+        <th></th>
+    </tr>
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>@item.Name</td>
+            <td>@item.Year</td>
+        </tr>
+    }
+</table>*@
